@@ -1,26 +1,38 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons'
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-// const [color, setColor] = useState()
-
-function navigateProfile({ navigation }) {
-  
-}
 
 export default function TopBar({ navigation }) {
+  const [color, setColor] = useState({
+    active: '#F06795',
+    disabled: '#5c5c5c'
+  })
+
+  const navigateHome = () => {
+    navigation.navigate('Home')
+    color.active
+  }
+  
+  const navigateChat = () => {
+    navigation.navigate('Chat')
+    color.disabled
+  }
+
+  const navigateProfile = () => {
+    navigation.navigate('Profile')
+    color.disabled
+  }
+
   return (
     <View style={styles.container}>
-       <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <FontAwesome5 name="fire" size={27} color="#F06795" />  
+       <TouchableOpacity onPress={navigateHome}>
+          <FontAwesome5 name="fire" size={27} color={color.active} />  
        </TouchableOpacity>
-       <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
-       <FontAwesome name="comments" size={27} color="#5c5c5c" />
+       <TouchableOpacity onPress={navigateChat}>
+       <FontAwesome name="comments" size={27} color={color.disabled} />
           </TouchableOpacity>
-       <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <FontAwesome name="user" size={27} color="#5c5c5c" />
+       <TouchableOpacity onPress={navigateProfile}>
+          <FontAwesome name="user" size={27} color={color.disabled} />
        </TouchableOpacity>
     </View>
   )
@@ -28,6 +40,7 @@ export default function TopBar({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: 24,
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-around',

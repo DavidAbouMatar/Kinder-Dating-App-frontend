@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-// import axios from 'axios'
 import { Button, View, Text, StyleSheet, Alert } from 'react-native'
-import Constants from 'expo-constants'
-import TopBar from '../components/TopBar'
+import WelcomeTopBar from '../components/WelcomeTopBar'
 import BottomBar from '../components/BottomBar'
 import Swipes from '../components/Swipes'
 
-export default function HomeScreen({ navigation }) {
+export default function WelcomeScreen({ navigation }) {
   const [users, setUsers] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const swipesRef = useRef(null)
@@ -53,7 +51,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <TopBar navigation={navigation}/>
+      <WelcomeTopBar navigation={navigation}/>
       <View style={styles.swipes}>
         {users.length > 1 &&
           users.map(

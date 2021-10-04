@@ -14,6 +14,7 @@ function Swipes({ users, currentIndex, handleLike, handlePass, swipesRef }) {
       </RectButton>
     )
   }
+  
   const renderRightActions = () => {
     return (
       <RectButton style={styles.container}>
@@ -21,7 +22,6 @@ function Swipes({ users, currentIndex, handleLike, handlePass, swipesRef }) {
       </RectButton>
     )
   }
-  console.log(users)
 
   return (
     <Swipeable
