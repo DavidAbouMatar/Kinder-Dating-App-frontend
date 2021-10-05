@@ -4,8 +4,8 @@ import { Button, View, Text, StyleSheet } from 'react-native';
 export default function LoginScreen({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text>Login Screen</Text>
-            <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
+            <Text>Sign-in Screen</Text>
+            <Button title="Go to Home" onPress={navigation.navigate('Home')} />
       </View>
     );
 }

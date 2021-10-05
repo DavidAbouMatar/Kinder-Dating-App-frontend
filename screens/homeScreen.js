@@ -23,7 +23,6 @@ export default function HomeScreen({ navigation }) {
     setUsers(data.results)
   }
   
-  console.log(users)
   useEffect(() => {
     fetchUsers()
   }, [])

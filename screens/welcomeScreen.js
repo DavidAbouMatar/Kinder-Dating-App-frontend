@@ -21,7 +21,6 @@ export default function WelcomeScreen({ navigation }) {
     setUsers(data.results)
   }
   
-  console.log(users)
   useEffect(() => {
     fetchUsers()
   }, [])

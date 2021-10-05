@@ -7,21 +7,13 @@ import { FontAwesome5, FontAwesome } from '@expo/vector-icons'
 // const [color, setColor] = useState()
 
 
-export default function TopBar({ navigation }) {
-  // function navigateHome({ navigation }) {
-  //   navigation.navigate('Home')
-  //   console.log('home')
-  // }
-  
-  // function navigateChat({ navigation }) {
-  //   navigation.navigate('Chat')
-  //   console.log('chat')
-  // }
-  
-  // function navigateProfile({ navigation }) {
-  //   navigation.navigate('Profile')
-  //   console.log('profile')
-  // }
+export default function WelcomeTopBar({ navigation }) {
+
+  const navigateHome = () => {
+    // navigation.navigate('Home')
+    navigation.getParam(setIsSignedIn(!isSignedIn))
+    console.log(isSignedIn)
+}
 
   return (
     <View style={styles.container}>

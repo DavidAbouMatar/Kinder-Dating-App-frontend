@@ -3,36 +3,51 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons'
 
 export default function TopBar({ navigation }) {
+
+
   const [color, setColor] = useState({
-    active: '#F06795',
-    disabled: '#5c5c5c'
+    true: '#F06795',
+    false: '#5c5c5c'
+  })
+
+  const [colorHome, setHome] = useState({
+    true: '#F06795',
+    false: '#5c5c5c'
+  })
+  const [colorChat, setChat] = useState({
+    true: '#F06795',
+    false: '#5c5c5c'
+  })
+  const [colorProfile, setProfile] = useState({
+    true: '#F06795',
+    false: '#5c5c5c'
   })
 
   const navigateHome = () => {
     navigation.navigate('Home')
-    color.active
+    setHome(colorHome)
   }
   
   const navigateChat = () => {
     navigation.navigate('Chat')
-    color.disabled
+    setChat(colorChat)
   }
 
   const navigateProfile = () => {
     navigation.navigate('Profile')
-    color.disabled
+    setProfile(colorProfile)
   }
 
   return (
     <View style={styles.container}>
        <TouchableOpacity onPress={navigateHome}>
-          <FontAwesome5 name="fire" size={27} color={color.active} />  
+          <FontAwesome5 name="fire" size={27} color={color.true} />  
        </TouchableOpacity>
        <TouchableOpacity onPress={navigateChat}>
-       <FontAwesome name="comments" size={27} color={color.disabled} />
+       <FontAwesome name="comments" size={27} color={color.false} />
           </TouchableOpacity>
        <TouchableOpacity onPress={navigateProfile}>
-          <FontAwesome name="user" size={27} color={color.disabled} />
+          <FontAwesome name="user" size={27} color={color.false} />
        </TouchableOpacity>
     </View>
   )
@@ -40,7 +55,6 @@ export default function TopBar({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 24,
     height: 60,
     flexDirection: 'row',
     justifyContent: 'space-around',

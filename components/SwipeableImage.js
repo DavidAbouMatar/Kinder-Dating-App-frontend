@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     borderColor: '#F06795',
   },
   photo: {
-    height: '100%',
+    height: 600, // to work on browser, set it to 600, '100%' on phone
     resizeMode: 'cover',
     borderRadius: 20,
   },
