@@ -8,7 +8,7 @@ export default function WelcomeScreen({ navigation }) {
   const [users, setUsers] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const swipesRef = useRef(null)
-
+  
   async function fetchUsers() {
     const response = await fetch("https://randomuser.me/api/?gender=female&results=50")
     
