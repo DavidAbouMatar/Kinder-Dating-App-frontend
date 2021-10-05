@@ -43,6 +43,7 @@ export default function Login() {
       AsyncStorage.setItem("ID", responseData['id']);
       AsyncStorage.setItem("first_name", responseData['first_name']);
       AsyncStorage.setItem("last_name", responseData['last_name']);
+      AsyncStorage.setItem("isSignedIn", true);
 
      }).catch(error => console.log(error) )} 
 
