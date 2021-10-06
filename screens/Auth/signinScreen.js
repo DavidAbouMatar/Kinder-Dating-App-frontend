@@ -15,6 +15,7 @@ import {
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [failedLogin, setFailedLogin] = useState(false);
 
   //send  login data
   async function login() {
@@ -32,15 +33,24 @@ export default function SignInScreen({ navigation }) {
         .then((response) => response.json())
 
         .then((responseData) => {
-          // retrieve token using AsyncStorage.getItem('token')
-          AsyncStorage.setItem("token", responseData["token"]);
-          AsyncStorage.setItem("ID", responseData["id"]);
-          AsyncStorage.setItem("first_name", responseData["first_name"]);
-          AsyncStorage.setItem("last_name", responseData["last_name"]);
-          AsyncStorage.setItem("isSignedIn", true);
-          console.log(responseData);
+          if (!responseData.status) {
+            // retrieve token using AsyncStorage.getItem('token')
+            AsyncStorage.setItem("token", responseData["token"]);
+            AsyncStorage.setItem("ID", responseData["id"]);
+            AsyncStorage.setItem("first_name", responseData["first_name"]);
+            AsyncStorage.setItem("last_name", responseData["last_name"]);
+            AsyncStorage.setItem("isSignedIn", true);
+            setFailedLogin(false);
+            console.log("Login Successfull!");
+          } else {
+            console.log("Invalid Credentials!");
+            setFailedLogin(true);
+          }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          setFailedLogin(true);
+          console.log(error);
+        });
     }
   }
 
@@ -58,7 +68,11 @@ export default function SignInScreen({ navigation }) {
       </View>
 
       <StatusBar style="auto" />
-      <View style={styles.failedLogin}>Wrong email or password!</View>
+      {failedLogin && (
+        <View style={styles.failedLoginOuter}>
+          <Text style={styles.failedLoginInner}>Wrong email or password!</Text>
+        </View>
+      )}
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -137,7 +151,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
   },
-  failedLogin: {
+  failedLoginOuter: {
     color: "#fff",
     backgroundColor: "#f24444",
     borderRadius: 5,
@@ -145,8 +159,14 @@ const styles = StyleSheet.create({
     height: 45,
     marginBottom: 20,
     alignItems: "center",
+  },
+  failedLoginInner: {
+    color: "#fff",
+    backgroundColor: "#f24444",
     flex: 1,
     padding: 10,
     marginLeft: 20,
+    width: "100%",
+    textAlign: "center",
   },
 });
