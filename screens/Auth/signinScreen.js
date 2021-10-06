@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {StatusBar} from "expo-status-bar";
-import React, {useState} from "react";
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -19,12 +19,12 @@ export default function SignInScreen({ navigation }) {
   //send  login data
   async function login() {
     if (email != "" && password != "") {
-      const data = {email: email, password: password};
+      const data = { email: email, password: password };
       const headers = {
         "Content-Type": "application/json",
         "content-Type": "application/json",
       };
-      await fetch("http://127.0.0.1:8000/api/auth/login", {
+      await fetch("http://127.0.0.1:8000/api/login", {
         method: "POST",
         headers: headers,
         body: JSON.stringify(data),
@@ -38,6 +38,7 @@ export default function SignInScreen({ navigation }) {
           AsyncStorage.setItem("first_name", responseData["first_name"]);
           AsyncStorage.setItem("last_name", responseData["last_name"]);
           AsyncStorage.setItem("isSignedIn", true);
+          console.log(responseData);
         })
         .catch((error) => console.log(error));
     }
@@ -57,6 +58,7 @@ export default function SignInScreen({ navigation }) {
       </View>
 
       <StatusBar style="auto" />
+      <View style={styles.failedLogin}>Wrong email or password!</View>
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -121,6 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginLeft: 20,
+    width: "100%",
   },
   button: {
     backgroundColor: "#F06795",
@@ -129,9 +132,21 @@ const styles = StyleSheet.create({
     margin: "10%",
   },
   register: {
-    fontSize:20,
-    alignSelf:"center",
+    fontSize: 20,
+    alignSelf: "center",
     paddingTop: 20,
-    paddingBottom: 10
-  }
+    paddingBottom: 10,
+  },
+  failedLogin: {
+    color: "#fff",
+    backgroundColor: "#f24444",
+    borderRadius: 5,
+    width: "100%",
+    height: 45,
+    marginBottom: 20,
+    alignItems: "center",
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+  },
 });
