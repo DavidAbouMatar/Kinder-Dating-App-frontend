@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {StatusBar} from "expo-status-bar";
-import React, {useState} from "react";
+import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -16,11 +16,12 @@ import {
 export default function SignInScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [failedLogin, setFailedLogin] = useState(false);
 
   //send  login data
   async function login() {
     if (email != "" && password != "") {
-      const data = {email: email, password: password};
+      const data = { email: email, password: password };
       const headers = {
         "Content-Type": "application/json",
         "content-Type": "application/json",
@@ -33,16 +34,23 @@ export default function SignInScreen({ navigation }) {
         .then((response) => response.json())
 
         .then((responseData) => {
-          // retrieve token using AsyncStorage.getItem('token')
-          AsyncStorage.setItem("token", responseData["token"]);
-          AsyncStorage.setItem("ID", responseData["id"]);
-          AsyncStorage.setItem("first_name", responseData["first_name"]);
-          AsyncStorage.setItem("last_name", responseData["last_name"]);
-          AsyncStorage.setItem("isSignedIn", true);
+          if (!responseData.status) {
+            // retrieve token using AsyncStorage.getItem('token')
+            AsyncStorage.setItem("token", responseData["token"]);
+            AsyncStorage.setItem("ID", responseData["id"]);
+            AsyncStorage.setItem("first_name", responseData["first_name"]);
+            AsyncStorage.setItem("last_name", responseData["last_name"]);
+            AsyncStorage.setItem("isSignedIn", true);
+            setFailedLogin(false);
+            console.log("Login Successfull!");
+          } else {
+            console.log("Invalid Credentials!");
+            setFailedLogin(true);
+          }
         })
-        .catch(error = () => {
+        .catch((error) => {
+          setFailedLogin(true);
           console.log(error);
-          AsyncStorage.setItem("isSignedIn", false);
         });
     }
   }
@@ -55,6 +63,11 @@ export default function SignInScreen({ navigation }) {
       </View>
 
       <StatusBar style="auto" />
+      {failedLogin && (
+        <View style={styles.failedLoginOuter}>
+          <Text style={styles.failedLoginInner}>Wrong email or password!</Text>
+        </View>
+      )}
       <View style={styles.inputView}>
         <TextInput
           style={styles.TextInput}
@@ -119,6 +132,7 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     marginLeft: 20,
+    width: "100%",
   },
   button: {
     backgroundColor: "#F06795",
@@ -127,9 +141,27 @@ const styles = StyleSheet.create({
     margin: "10%",
   },
   register: {
-    fontSize:20,
-    alignSelf:"center",
+    fontSize: 20,
+    alignSelf: "center",
     paddingTop: 20,
-    paddingBottom: 10
-  }
+    paddingBottom: 10,
+  },
+  failedLoginOuter: {
+    color: "#fff",
+    backgroundColor: "#f24444",
+    borderRadius: 5,
+    width: "100%",
+    height: 45,
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  failedLoginInner: {
+    color: "#fff",
+    backgroundColor: "#f24444",
+    flex: 1,
+    padding: 10,
+    marginLeft: 20,
+    width: "100%",
+    textAlign: "center",
+  },
 });
