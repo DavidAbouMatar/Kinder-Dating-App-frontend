@@ -15,7 +15,7 @@ import WelcomeScreen from './screens/welcomeScreen';
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [isSignedIn, setisSignedIn] = useState(false);
+  const [isSignedIn, setisSignedIn] = useState(true);
   return (
     isSignedIn ? (
       // No token found, user isn't signed in

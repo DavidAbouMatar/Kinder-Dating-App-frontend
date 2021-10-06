@@ -22,9 +22,11 @@ import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 import TopBar from '../components/TopBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function ProfileScreen({ navigation }) {
+  const [ttoken, setToken] = useState("");
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
@@ -39,16 +41,27 @@ export default function ProfileScreen({ navigation }) {
   const [bio, setBio] = useState("");
   const [updateGender, setUpdateGender] = useState("");
   const [updateintrest, setupdateintrest] = useState("");
+ 
+  const [profileImage, setProfileImage] = useState("https://kittyinpink.co.uk/wp-content/uploads/2016/12/facebook-default-photo-male_1-1.jpg");
+
+ 
 
 
-  //fetch user profile information before screen render
+
+
   useEffect(() => {
+   
+    // get auth token
+    AsyncStorage.getItem("token").then((value) => {
+    
+      setToken(value)
+
 
     fetch("http://127.0.0.1:8000/api/get_user_profile", {
       method: 'GET',
       headers: new Headers({"Content-Type": "application/json",
       "content-Type": "application/json",
-      "Authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYzMzU0MTA3MywiZXhwIjoxNjMzNTQ0NjczLCJuYmYiOjE2MzM1NDEwNzMsImp0aSI6Ikl3U1ZVVEl5eERZd1ZuRDEiLCJzdWIiOjYsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.4Lk4rF9D3EHvySKdiBFZYvMcEsYoWWTLHe1P74jByuw"
+      "Authorization":"Bearer "+ value
        }),}
     )
     .then(response => response.json())
@@ -78,10 +91,26 @@ export default function ProfileScreen({ navigation }) {
       
         
       })
+
+
+      fetch("http://127.0.0.1:8000/api/get_user_profile_image", {
+      method: 'GET',
+      headers: new Headers({"Content-Type": "application/json",
+      "content-Type": "application/json",
+      "Authorization":"Bearer "+ value
+       }),}
+    ).then(response => response.json())
+    .then((data) => {
+      if(data){
+      setProfileImage(data['picture_url']) 
+    }
+    })
+  })
   },[])
 
 
     async function takeAndUploadPhotoAsync() {
+     
         let result = await ImagePicker.launchImageLibraryAsync({
           allowsEditing: true,
           aspect: [4, 3],
@@ -100,14 +129,14 @@ export default function ProfileScreen({ navigation }) {
           headers: {
             "Content-Type":"application/json",
             "Accept":"application/jason",
-             "Authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYzMzU0MTA3MywiZXhwIjoxNjMzNTQ0NjczLCJuYmYiOjE2MzM1NDEwNzMsImp0aSI6Ikl3U1ZVVEl5eERZd1ZuRDEiLCJzdWIiOjYsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.4Lk4rF9D3EHvySKdiBFZYvMcEsYoWWTLHe1P74jByuw"
+             "Authorization":"Bearer "+ ttoken
               },
           method: 'POST',
           body: JSON.stringify({ "image_string": base_64}),
          }
      
         );
-        bs.current.snapTo(1)
+        // this.bs.current.snapTo(1)
       }
 
       async function edit_profile(){
@@ -140,7 +169,7 @@ export default function ProfileScreen({ navigation }) {
        };
         const headers = { 
           "Content-Type": "application/json",
-          "Authorization":"Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9sb2dpbiIsImlhdCI6MTYzMzU0MTA3MywiZXhwIjoxNjMzNTQ0NjczLCJuYmYiOjE2MzM1NDEwNzMsImp0aSI6Ikl3U1ZVVEl5eERZd1ZuRDEiLCJzdWIiOjYsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.4Lk4rF9D3EHvySKdiBFZYvMcEsYoWWTLHe1P74jByuw"
+          "Authorization":"Bearer "+ ttoken
         }
         await fetch("http://127.0.0.1:8000/api/edit_profile", {
         method: "POST",
@@ -214,7 +243,7 @@ export default function ProfileScreen({ navigation }) {
                        
 
                     <ImageBackground
-                        source={{uri: 'https://thumbs.dreamstime.com/b/purple-blue-textured-background-wallpaper-app-background-layout-dark-gradient-colors-vintage-distressed-elegant-78118630.jpg'}}
+                        source={{uri: profileImage}}
                         style={{flex: 1,height:100, width: 100}}
                         imageStyle={{borderRadius:15}}
                         >
@@ -357,12 +386,7 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#FFFFFF',
         paddingTop: 20,
-        // borderTopLeftRadius: 20,
-        // borderTopRightRadius: 20,
-        // shadowColor: '#000000',
-        // shadowOffset: {width: 0, height: 0},
-        // shadowRadius: 5,
-        // shadowOpacity: 0.4,
+
       },
       header: {
         backgroundColor: '#FFFFFF',
