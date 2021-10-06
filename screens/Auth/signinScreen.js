@@ -10,6 +10,7 @@ import {
   Button,
   onPress,
   TouchableOpacity,
+  Alert
 } from "react-native";
 
 export default function SignInScreen({ navigation }) {
@@ -24,7 +25,7 @@ export default function SignInScreen({ navigation }) {
         "Content-Type": "application/json",
         "content-Type": "application/json",
       };
-      await fetch("http://127.0.0.1:8000/api/auth/login", {
+      await fetch("http://127.0.0.1:8000/api/login", {
         method: "POST",
         headers: headers,
         body: JSON.stringify(data),
@@ -39,19 +40,16 @@ export default function SignInScreen({ navigation }) {
           AsyncStorage.setItem("last_name", responseData["last_name"]);
           AsyncStorage.setItem("isSignedIn", true);
         })
-        .catch((error) => console.log(error));
+        .catch(error = () => {
+          console.log(error);
+          AsyncStorage.setItem("isSignedIn", false);
+        });
     }
   }
 
+
   return (
     <View style={styles.container}>
-      {/* <View style={styles.register}>
-        <Text>No Account</Text>
-        <Button
-          title="Create Acount"
-          onPress={() => navigation.navigate("Register")}
-        />
-      </View> */}
       <View>
         <Text style={styles.header}>Weclome back!</Text>
       </View>
