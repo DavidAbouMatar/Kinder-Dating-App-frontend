@@ -9,7 +9,7 @@ Main Features:
   - Login / Signup
   - Men are able to see other users' profiles that match their gender intrests only
   - Users are able to upload pictures
-  - Admins are able to approve / decline uploaded pictures :wink: (before displaying them on the website)
+  - Admins are able to approve / decline uploaded pictures (before displaying them on the website)
   - Admins are able to approve / decline messages before displaying to the recipient.
   - Users are able to edit their account information (Hobbies, Interests, etc.)
   - Users are able to search and meet other users
